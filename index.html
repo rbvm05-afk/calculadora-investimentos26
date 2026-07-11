@@ -3,146 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Investimentos • Comparador</title>
+    <title>Investment Calculator • Multi-language</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
-        
-        body {
-            font-family: 'Inter', system_ui, sans-serif;
-        }
-        .font-display {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .big-number {
-            font-size: 1.75rem;
-            line-height: 1.1;
-            font-weight: 700;
-        }
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .big-number { font-size: 1.65rem; line-height: 1.1; font-weight: 700; }
     </style>
 </head>
 <body class="bg-slate-50">
-    <div class="max-w-6xl mx-auto px-6 py-10">
+    <div class="max-w-6xl mx-auto px-6 py-8">
         
         <!-- Header -->
-        <div class="text-center mb-10">
-            <div class="flex justify-center mb-4">
-                <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center">
-                    <i class="fa-solid fa-chart-line text-white text-3xl"></i>
-                </div>
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-semibold tracking-tight" id="title">Investment Calculator</h1>
+                <p class="text-slate-600" id="subtitle">Compare returns in different assets</p>
             </div>
-            <h1 class="text-4xl font-semibold tracking-tighter">Calculadora de Investimentos</h1>
-            <p class="mt-2 text-xl text-slate-600">Com comparação em outros ativos</p>
+            
+            <!-- Language Selector -->
+            <div class="flex items-center gap-2 bg-white border rounded-2xl p-1 shadow-sm">
+                <button onclick="changeLanguage('pt')" class="px-3 py-1.5 rounded-xl text-sm font-medium hover:bg-slate-100 lang-btn active" data-lang="pt">🇧🇷 PT</button>
+                <button onclick="changeLanguage('en')" class="px-3 py-1.5 rounded-xl text-sm font-medium hover:bg-slate-100 lang-btn" data-lang="en">🇺🇸 EN</button>
+                <button onclick="changeLanguage('es')" class="px-3 py-1.5 rounded-xl text-sm font-medium hover:bg-slate-100 lang-btn" data-lang="es">🇪🇸 ES</button>
+                <button onclick="changeLanguage('th')" class="px-3 py-1.5 rounded-xl text-sm font-medium hover:bg-slate-100 lang-btn" data-lang="th">🇹🇭 TH</button>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Formulário -->
+            <!-- Form -->
             <div class="lg:col-span-5">
                 <div class="bg-white rounded-3xl shadow-sm border p-8">
-                    <h2 class="font-semibold text-xl mb-6">Seus dados</h2>
+                    <h2 class="font-semibold text-xl mb-6" id="formTitle">Your Investment Data</h2>
                     
                     <div class="space-y-5">
                         <div>
-                            <label class="block text-sm font-medium mb-1.5">Valor inicial (R$)</label>
-                            <input type="number" id="valorInicial" value="10000" 
-                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                            <label class="block text-sm font-medium mb-1.5" id="labelInitial">Initial amount (BRL)</label>
+                            <input type="number" id="valorInicial" value="10000" class="w-full px-4 py-3 border rounded-2xl text-lg">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium mb-1.5">Aporte mensal (R$)</label>
-                            <input type="number" id="aporteMensal" value="500" 
-                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                            <label class="block text-sm font-medium mb-1.5" id="labelMonthly">Monthly contribution (BRL)</label>
+                            <input type="number" id="aporteMensal" value="500" class="w-full px-4 py-3 border rounded-2xl text-lg">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium mb-1.5">Taxa de juros anual (%)</label>
-                            <input type="number" id="taxaJuros" value="12" step="0.1"
-                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                            <label class="block text-sm font-medium mb-1.5" id="labelRate">Annual interest rate (%)</label>
+                            <input type="number" id="taxaJuros" value="12" step="0.1" class="w-full px-4 py-3 border rounded-2xl text-lg">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium mb-1.5">Tempo (anos)</label>
-                            <input type="number" id="anos" value="10" 
-                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                            <label class="block text-sm font-medium mb-1.5" id="labelYears">Investment period (years)</label>
+                            <input type="number" id="anos" value="10" class="w-full px-4 py-3 border rounded-2xl text-lg">
                         </div>
                         
                         <button onclick="calcularTudo()" 
-                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-2xl text-lg mt-2">
-                            Calcular e Comparar
+                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-2xl text-lg mt-2" id="btnCalculate">
+                            Calculate & Compare
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Resultados -->
+            <!-- Results -->
             <div class="lg:col-span-7">
                 <div class="bg-white rounded-3xl shadow-sm border p-8">
-                    <h2 class="font-semibold text-xl mb-6">Resultado do seu investimento</h2>
+                    <h2 class="font-semibold text-xl mb-6" id="resultTitle">Your Investment Result</h2>
                     
                     <div id="resultados" class="hidden">
                         <div class="grid grid-cols-3 gap-4 mb-8">
                             <div class="bg-emerald-50 rounded-2xl p-5">
-                                <div class="text-sm text-emerald-600">Total acumulado</div>
+                                <div class="text-sm text-emerald-600" id="labelTotal">Total accumulated</div>
                                 <div id="totalAcumulado" class="big-number text-emerald-600 mt-1"></div>
                             </div>
                             <div class="bg-slate-50 rounded-2xl p-5">
-                                <div class="text-sm text-slate-600">Total investido</div>
+                                <div class="text-sm text-slate-600" id="labelInvested">Total invested</div>
                                 <div id="totalInvestido" class="big-number text-slate-700 mt-1"></div>
                             </div>
                             <div class="bg-amber-50 rounded-2xl p-5">
-                                <div class="text-sm text-amber-600">Juros ganhos</div>
+                                <div class="text-sm text-amber-600" id="labelInterest">Interest earned</div>
                                 <div id="jurosTotais" class="big-number text-amber-600 mt-1"></div>
                             </div>
                         </div>
                     </div>
                     
                     <div id="placeholder" class="text-center py-12 text-slate-400">
-                        Preencha os dados e clique em calcular
+                        <i class="fa-solid fa-calculator text-4xl mb-3"></i>
+                        <p id="placeholderText">Fill in the data and click calculate</p>
                     </div>
                 </div>
 
-                <!-- Comparação -->
+                <!-- Comparison -->
                 <div class="mt-6 bg-white rounded-3xl shadow-sm border p-8">
-                    <h2 class="font-semibold text-xl mb-6">Comparação com outros investimentos</h2>
+                    <h2 class="font-semibold text-xl mb-6" id="compareTitle">Comparison with other assets</h2>
                     
                     <div id="comparacao" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="border rounded-2xl p-4">
-                            <div class="flex items-center gap-2 mb-2">
+                            <div class="flex items-center gap-2 mb-1">
                                 <i class="fa-solid fa-dollar-sign text-blue-500"></i>
-                                <span class="font-medium">Dólar</span>
+                                <span class="font-medium" id="labelDollar">US Dollar</span>
                             </div>
                             <div id="valorDolar" class="text-xl font-semibold text-blue-600"></div>
                         </div>
-                        
                         <div class="border rounded-2xl p-4">
-                            <div class="flex items-center gap-2 mb-2">
+                            <div class="flex items-center gap-2 mb-1">
                                 <i class="fa-solid fa-euro-sign text-emerald-500"></i>
-                                <span class="font-medium">Euro</span>
+                                <span class="font-medium" id="labelEuro">Euro</span>
                             </div>
                             <div id="valorEuro" class="text-xl font-semibold text-emerald-600"></div>
                         </div>
-                        
                         <div class="border rounded-2xl p-4">
-                            <div class="flex items-center gap-2 mb-2">
+                            <div class="flex items-center gap-2 mb-1">
                                 <i class="fa-solid fa-coins text-yellow-500"></i>
-                                <span class="font-medium">Ouro</span>
+                                <span class="font-medium" id="labelGold">Gold</span>
                             </div>
                             <div id="valorOuro" class="text-xl font-semibold text-yellow-600"></div>
                         </div>
-                        
                         <div class="border rounded-2xl p-4">
-                            <div class="flex items-center gap-2 mb-2">
+                            <div class="flex items-center gap-2 mb-1">
                                 <i class="fa-brands fa-bitcoin text-red-500"></i>
-                                <span class="font-medium">Bitcoin</span>
+                                <span class="font-medium" id="labelBitcoin">Bitcoin</span>
                             </div>
                             <div id="valorBitcoin" class="text-xl font-semibold text-red-600"></div>
                         </div>
                     </div>
                     
                     <div id="placeholderComparacao" class="text-center py-8 text-slate-400">
-                        Resultados da comparação aparecerão aqui
+                        <p id="comparePlaceholder">Comparison results will appear here</p>
                     </div>
                 </div>
             </div>
@@ -150,6 +138,131 @@
     </div>
 
     <script>
+        // Translations
+        const translations = {
+            pt: {
+                title: "Calculadora de Investimentos",
+                subtitle: "Compare o retorno em diferentes ativos",
+                formTitle: "Seus dados de investimento",
+                labelInitial: "Valor inicial (R$)",
+                labelMonthly: "Aporte mensal (R$)",
+                labelRate: "Taxa de juros anual (%)",
+                labelYears: "Período de investimento (anos)",
+                btnCalculate: "Calcular e Comparar",
+                resultTitle: "Resultado do seu investimento",
+                labelTotal: "Total acumulado",
+                labelInvested: "Total investido",
+                labelInterest: "Juros ganhos",
+                compareTitle: "Comparação com outros ativos",
+                labelDollar: "Dólar (USD)",
+                labelEuro: "Euro (EUR)",
+                labelGold: "Ouro",
+                labelBitcoin: "Bitcoin",
+                placeholderText: "Preencha os dados e clique em calcular",
+                comparePlaceholder: "Resultados da comparação aparecerão aqui"
+            },
+            en: {
+                title: "Investment Calculator",
+                subtitle: "Compare returns across different assets",
+                formTitle: "Your Investment Data",
+                labelInitial: "Initial amount (BRL)",
+                labelMonthly: "Monthly contribution (BRL)",
+                labelRate: "Annual interest rate (%)",
+                labelYears: "Investment period (years)",
+                btnCalculate: "Calculate & Compare",
+                resultTitle: "Your Investment Result",
+                labelTotal: "Total accumulated",
+                labelInvested: "Total invested",
+                labelInterest: "Interest earned",
+                compareTitle: "Comparison with other assets",
+                labelDollar: "US Dollar",
+                labelEuro: "Euro",
+                labelGold: "Gold",
+                labelBitcoin: "Bitcoin",
+                placeholderText: "Fill in the data and click calculate",
+                comparePlaceholder: "Comparison results will appear here"
+            },
+            es: {
+                title: "Calculadora de Inversiones",
+                subtitle: "Compara el rendimiento en diferentes ativos",
+                formTitle: "Tus datos de inversión",
+                labelInitial: "Monto inicial (BRL)",
+                labelMonthly: "Aporte mensual (BRL)",
+                labelRate: "Tasa de interés anual (%)",
+                labelYears: "Período de inversión (años)",
+                btnCalculate: "Calcular y Comparar",
+                resultTitle: "Resultado de tu inversión",
+                labelTotal: "Total acumulado",
+                labelInvested: "Total invertido",
+                labelInterest: "Intereses ganados",
+                compareTitle: "Comparación con otros activos",
+                labelDollar: "Dólar estadounidense",
+                labelEuro: "Euro",
+                labelGold: "Oro",
+                labelBitcoin: "Bitcoin",
+                placeholderText: "Completa los datos y haz clic en calcular",
+                comparePlaceholder: "Los resultados de la comparação aparecerán aquí"
+            },
+            th: {
+                title: "เครื่องคำนวณการลงทุน",
+                subtitle: "เปรียบเทียบผลตอบแทนจากสินทรัพย์ต่าง ๆ",
+                formTitle: "ข้อมูลการลงทุนของคุณ",
+                labelInitial: "จำนวนเงินเริ่มต้น (BRL)",
+                labelMonthly: "เงินฝากรายเดือน (BRL)",
+                labelRate: "อัตราดอกเบี้ยต่อปี (%)",
+                labelYears: "ระยะเวลาการลงทุน (ปี)",
+                btnCalculate: "คำนวณและเปรียบเทียบ",
+                resultTitle: "ผลการลงทุนของคุณ",
+                labelTotal: "ยอดรวมสะสม",
+                labelInvested: "ยอดเงินลงทุนรวม",
+                labelInterest: "ดอกเบี้ยที่ได้รับ",
+                compareTitle: "เปรียบเทียบกับสินทรัพย์อื่น",
+                labelDollar: "ดอลลาร์สหรัฐ",
+                labelEuro: "ยูโร",
+                labelGold: "ทองคำ",
+                labelBitcoin: "บิตคอยน์",
+                placeholderText: "กรอกข้อมูลแล้วกดคำนวณ",
+                comparePlaceholder: "ผลการเปรียบเทียบจะแสดงที่นี่"
+            }
+        };
+
+        let currentLang = 'pt';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-100', 'text-indigo-700');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('bg-indigo-100', 'text-indigo-700');
+                }
+            });
+
+            const t = translations[lang];
+
+            // Update all texts
+            document.getElementById('title').innerText = t.title;
+            document.getElementById('subtitle').innerText = t.subtitle;
+            document.getElementById('formTitle').innerText = t.formTitle;
+            document.getElementById('labelInitial').innerText = t.labelInitial;
+            document.getElementById('labelMonthly').innerText = t.labelMonthly;
+            document.getElementById('labelRate').innerText = t.labelRate;
+            document.getElementById('labelYears').innerText = t.labelYears;
+            document.getElementById('btnCalculate').innerText = t.btnCalculate;
+            document.getElementById('resultTitle').innerText = t.resultTitle;
+            document.getElementById('labelTotal').innerText = t.labelTotal;
+            document.getElementById('labelInvested').innerText = t.labelInvested;
+            document.getElementById('labelInterest').innerText = t.labelInterest;
+            document.getElementById('compareTitle').innerText = t.compareTitle;
+            document.getElementById('labelDollar').innerText = t.labelDollar;
+            document.getElementById('labelEuro').innerText = t.labelEuro;
+            document.getElementById('labelGold').innerText = t.labelGold;
+            document.getElementById('labelBitcoin').innerText = t.labelBitcoin;
+            document.getElementById('placeholderText').innerText = t.placeholderText;
+            document.getElementById('comparePlaceholder').innerText = t.comparePlaceholder;
+        }
+
         function formatarMoeda(valor) {
             return new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
@@ -181,11 +294,10 @@
             const anos = parseFloat(document.getElementById('anos').value) || 0;
 
             if (inicial <= 0 || anos <= 0) {
-                alert("Preencha pelo menos Valor Inicial e Tempo.");
+                alert(currentLang === 'th' ? 'กรุณากรอกข้อมูลให้ครบ' : 'Please fill in at least Initial Amount and Years.');
                 return;
             }
 
-            // Resultado principal
             const resultado = calcularJurosCompostos(inicial, aporte, taxa, anos);
             
             document.getElementById('totalAcumulado').innerText = formatarMoeda(resultado.total);
@@ -195,7 +307,7 @@
             document.getElementById('placeholder').classList.add('hidden');
             document.getElementById('resultados').classList.remove('hidden');
 
-            // Comparação
+            // Comparison
             const taxasComparacao = { dolar: 6, euro: 5.5, ouro: 8, bitcoin: 30 };
             const comp = {};
             
@@ -210,6 +322,11 @@
             
             document.getElementById('placeholderComparacao').classList.add('hidden');
             document.getElementById('comparacao').classList.remove('hidden');
+        }
+
+        // Initialize with Portuguese
+        window.onload = function() {
+            changeLanguage('pt');
         }
     </script>
 </body>
