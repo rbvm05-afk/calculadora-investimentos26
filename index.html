@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Investimentos • Comparador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .big-number {
+            font-size: 1.75rem;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <div class="flex justify-center mb-4">
+                <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                    <i class="fa-solid fa-chart-line text-white text-3xl"></i>
+                </div>
+            </div>
+            <h1 class="text-4xl font-semibold tracking-tighter">Calculadora de Investimentos</h1>
+            <p class="mt-2 text-xl text-slate-600">Com comparação em outros ativos</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Formulário -->
+            <div class="lg:col-span-5">
+                <div class="bg-white rounded-3xl shadow-sm border p-8">
+                    <h2 class="font-semibold text-xl mb-6">Seus dados</h2>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium mb-1.5">Valor inicial (R$)</label>
+                            <input type="number" id="valorInicial" value="10000" 
+                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-1.5">Aporte mensal (R$)</label>
+                            <input type="number" id="aporteMensal" value="500" 
+                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-1.5">Taxa de juros anual (%)</label>
+                            <input type="number" id="taxaJuros" value="12" step="0.1"
+                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-1.5">Tempo (anos)</label>
+                            <input type="number" id="anos" value="10" 
+                                   class="w-full px-4 py-3 border rounded-2xl text-lg">
+                        </div>
+                        
+                        <button onclick="calcularTudo()" 
+                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-2xl text-lg mt-2">
+                            Calcular e Comparar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resultados -->
+            <div class="lg:col-span-7">
+                <div class="bg-white rounded-3xl shadow-sm border p-8">
+                    <h2 class="font-semibold text-xl mb-6">Resultado do seu investimento</h2>
+                    
+                    <div id="resultados" class="hidden">
+                        <div class="grid grid-cols-3 gap-4 mb-8">
+                            <div class="bg-emerald-50 rounded-2xl p-5">
+                                <div class="text-sm text-emerald-600">Total acumulado</div>
+                                <div id="totalAcumulado" class="big-number text-emerald-600 mt-1"></div>
+                            </div>
+                            <div class="bg-slate-50 rounded-2xl p-5">
+                                <div class="text-sm text-slate-600">Total investido</div>
+                                <div id="totalInvestido" class="big-number text-slate-700 mt-1"></div>
+                            </div>
+                            <div class="bg-amber-50 rounded-2xl p-5">
+                                <div class="text-sm text-amber-600">Juros ganhos</div>
+                                <div id="jurosTotais" class="big-number text-amber-600 mt-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="placeholder" class="text-center py-12 text-slate-400">
+                        Preencha os dados e clique em calcular
+                    </div>
+                </div>
+
+                <!-- Comparação -->
+                <div class="mt-6 bg-white rounded-3xl shadow-sm border p-8">
+                    <h2 class="font-semibold text-xl mb-6">Comparação com outros investimentos</h2>
+                    
+                    <div id="comparacao" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="border rounded-2xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-dollar-sign text-blue-500"></i>
+                                <span class="font-medium">Dólar</span>
+                            </div>
+                            <div id="valorDolar" class="text-xl font-semibold text-blue-600"></div>
+                        </div>
+                        
+                        <div class="border rounded-2xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-euro-sign text-emerald-500"></i>
+                                <span class="font-medium">Euro</span>
+                            </div>
+                            <div id="valorEuro" class="text-xl font-semibold text-emerald-600"></div>
+                        </div>
+                        
+                        <div class="border rounded-2xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-coins text-yellow-500"></i>
+                                <span class="font-medium">Ouro</span>
+                            </div>
+                            <div id="valorOuro" class="text-xl font-semibold text-yellow-600"></div>
+                        </div>
+                        
+                        <div class="border rounded-2xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-brands fa-bitcoin text-red-500"></i>
+                                <span class="font-medium">Bitcoin</span>
+                            </div>
+                            <div id="valorBitcoin" class="text-xl font-semibold text-red-600"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="placeholderComparacao" class="text-center py-8 text-slate-400">
+                        Resultados da comparação aparecerão aqui
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                maximumFractionDigits: 0
+            }).format(valor);
+        }
+
+        function calcularJurosCompostos(inicial, aporte, taxaAnual, anos) {
+            const taxaMensal = taxaAnual / 100 / 12;
+            const meses = anos * 12;
+            let total = inicial;
+            
+            for (let i = 0; i < meses; i++) {
+                total = total * (1 + taxaMensal) + aporte;
+            }
+            
+            return {
+                total: total,
+                totalInvestido: inicial + (aporte * meses),
+                juros: total - inicial - (aporte * meses)
+            };
+        }
+
+        function calcularTudo() {
+            const inicial = parseFloat(document.getElementById('valorInicial').value) || 0;
+            const aporte = parseFloat(document.getElementById('aporteMensal').value) || 0;
+            const taxa = parseFloat(document.getElementById('taxaJuros').value) || 0;
+            const anos = parseFloat(document.getElementById('anos').value) || 0;
+
+            if (inicial <= 0 || anos <= 0) {
+                alert("Preencha pelo menos Valor Inicial e Tempo.");
+                return;
+            }
+
+            // Resultado principal
+            const resultado = calcularJurosCompostos(inicial, aporte, taxa, anos);
+            
+            document.getElementById('totalAcumulado').innerText = formatarMoeda(resultado.total);
+            document.getElementById('totalInvestido').innerText = formatarMoeda(resultado.totalInvestido);
+            document.getElementById('jurosTotais').innerText = formatarMoeda(resultado.juros);
+            
+            document.getElementById('placeholder').classList.add('hidden');
+            document.getElementById('resultados').classList.remove('hidden');
+
+            // Comparação
+            const taxasComparacao = { dolar: 6, euro: 5.5, ouro: 8, bitcoin: 30 };
+            const comp = {};
+            
+            for (let [key, t] of Object.entries(taxasComparacao)) {
+                comp[key] = calcularJurosCompostos(inicial, aporte, t, anos).total;
+            }
+            
+            document.getElementById('valorDolar').innerText = formatarMoeda(comp.dolar);
+            document.getElementById('valorEuro').innerText = formatarMoeda(comp.euro);
+            document.getElementById('valorOuro').innerText = formatarMoeda(comp.ouro);
+            document.getElementById('valorBitcoin').innerText = formatarMoeda(comp.bitcoin);
+            
+            document.getElementById('placeholderComparacao').classList.add('hidden');
+            document.getElementById('comparacao').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
